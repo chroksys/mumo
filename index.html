@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>mumo POS</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+<link href="style.css" rel="stylesheet"/>
+<script>
+window.nav=function(page){
+  var target=document.getElementById('page-'+page);
+  if(!target) return;
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++) pages[i].classList.remove('active');
+  target.classList.add('active');
+  var reveals=target.querySelectorAll('.reveal');
+  for(var j=0;j<reveals.length;j++) reveals[j].classList.add('visible');
+  var mobileNav=document.getElementById('mobileNav');
+  if(mobileNav) mobileNav.classList.remove('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(typeof window.initReveal==='function') setTimeout(window.initReveal,80);
+};
+
+window.syncFooters=function(){
+  var homeFooter=document.querySelector('#page-home > footer');
+  if(!homeFooter) return;
+
+  ['pricing','features','how','salons','food','retail','demo'].forEach(function(page){
+    var pageEl=document.getElementById('page-'+page);
+    if(!pageEl) return;
+
+    var existingFooter=pageEl.querySelector(':scope > footer');
+    var clonedFooter=homeFooter.cloneNode(true);
+
+    if(existingFooter){
+      existingFooter.replaceWith(clonedFooter);
+    }else{
+      pageEl.appendChild(clonedFooter);
+    }
+  });
+};
+
+window.switchSalonTab=function(tabName,element){
+  var section=element.closest('.salon-why');
+  if(!section) return;
+
+  var contents=section.querySelectorAll('.salon-why-content');
+  for(var i=0;i<contents.length;i++) contents[i].classList.remove('active');
+  
+  var target=section.querySelector('#salon-tab-'+tabName);
+  if(target) target.classList.add('active');
+  
+  var buttons=section.querySelectorAll('.salon-why-tab');
+  for(var j=0;j<buttons.length;j++) buttons[j].classList.remove('active');
+  element.classList.add('active');
+};
+
+document.addEventListener('DOMContentLoaded',window.syncFooters);
+</script>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    
+   <div class="logo" onclick="nav('home')">
+    <img src="images/mumo2-POS-Y.png" alt="Company Logo" class="logo-img">
+</div>
+<button class="menu-toggle" id="menuToggle" type="button">
+    ☰
+</button>
+ <nav class="topnav" id="mobileNav">
+    <button type="button" onclick="nav('how')">How it Works</button>
+
+<div class="dropdown-wrapper">
+
+    <button type="button" class="dropdown-trigger">
+        Business Types
+    </button>
+
+    <div class="mega-dropdown">
+
+       <a href="#" onclick="nav('food');return false;" class="biz-card">
+
+    <div class="biz-icon"><i class="fa-solid fa-utensils"></i></div>
+
+    <div class="biz-content">
+        <h4>Food & Beverages</h4>
+        <p>Restaurants, cafés, bars, bakeries and takeaways.</p>
+    </div>
+
+</a>
+
+<a href="#" onclick="nav('salons');return false;" class="biz-card">
+
+    <div class="biz-icon"><i class="fa-solid fa-scissors"></i></div>
+
+    <div class="biz-content">
+        <h4>Health & Beauty</h4>
+        <p>Salons, spas, barber shops and wellness businesses.</p>
+    </div>
+
+</a>
+
+<a href="#" onclick="nav('retail');return false;" class="biz-card">
+
+    <div class="biz-icon"><i class="fa-solid fa-store"></i></div>
+
+    <div class="biz-content">
+        <h4>Retail</h4>
+        <p>Shops, supermarkets, pharmacies and wholesalers.</p>
+    </div>
+
+</a>
+
+    </div>
+
+</div>
+
+<button type="button" onclick="nav('pricing')">Pricing</button>
+      <button type="button" onclick="nav('demo')" class="cta-btn">Book a Demo</button>
+    </nav>
+  </div>
+</header>
+
+<!-- STICKY CTA BAR -->
+<div class="sticky-cta" id="stickyCta">
+  <span>⚡ <strong>500+ businesses</strong> run on mumo — free to start</span>
+  <button class="sticky-cta-btn" onclick="window.open('https://app.mumopos.com/onboarding')">Start Free →</button>
+  <button class="sticky-cta-close" onclick="document.getElementById('stickyCta').style.display='none'">✕</button>
+</div>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/256707803223" target="_blank" class="wa-float" title="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+<div class="wa-tooltip">Chat with us on WhatsApp</div>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>We use cookies to improve your experience. By continuing, you agree to our <a href="#">Privacy Policy</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" onclick="closeCookie()">Accept</button>
+    <button class="cookie-decline" onclick="closeCookie()">Decline</button>
+  </div>
+</div>
+
+<!-- ========== HOME ========== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-blob hb1"></div><div class="hero-blob hb2"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge"><span class="dot"></span> Now live across East Africa</div>
+        <h1>The <span class="accent">Smarter</span> Way To Run Your Business</h1>
+        <p>All-in-one POS for salons, retail shops, and more. Shifts, inventory, employees, CRM one beautiful system.</p>
+        <div class="hero-btns">
+          <a href="https://app.mumopos.com/onboarding" class="btn-primary">Start for Free</a>
+          <button onclick="nav('demo')" class="btn-hero-outline">Book a Demo</button>
+        </div>
+        <div class="hero-pills">
+          <span class="hero-pill">✓ Free to start</span>
+          <span class="hero-pill">✓ No monthly fees</span>
+          <span class="hero-pill">✓ No card required</span>
+        </div>
+        <div class="live-counter">
+          <span class="lc-pulse"></span>
+          <span class="lc-num" id="liveCount">547</span> businesses using mumo right now
+        </div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-head"><div class="dash-logo">mumo POS</div><div class="dash-status">● Shift Open</div></div>
+        <div class="dash-metrics">
+          <div class="metric"><div class="metric-v"><small>UGX </small>847k</div><div class="metric-l">Revenue</div></div>
+          <div class="metric"><div class="metric-v">63</div><div class="metric-l">Customers</div></div>
+          <div class="metric"><div class="metric-v">38</div><div class="metric-l">Txns</div></div>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-lbl">7-Day Revenue</div>
+          <div class="bars">
+            <div class="bar" style="height:45%;animation-delay:.1s"></div><div class="bar" style="height:60%;animation-delay:.2s"></div><div class="bar" style="height:40%;animation-delay:.3s"></div><div class="bar" style="height:75%;animation-delay:.4s"></div><div class="bar" style="height:55%;animation-delay:.5s"></div><div class="bar" style="height:85%;animation-delay:.6s"></div><div class="bar" style="height:100%;animation-delay:.7s"></div>
+          </div>
+        </div>
+        <div class="dash-pills"><div class="dp o">Top: Haircut · 85k</div><div class="dp">Alice M.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYMENT BADGES -->
+ <div class="pay-strip">
+    <div class="pay-inner">
+        <span class="pay-lbl">Accepts payments via</span>
+
+        <img src="images/mtn-momo-mobile-money-uganda-seeklogo.png" alt="MTN MoMo" class="pay-logo">
+        <img src="images/airtel-money-uganda-seeklogo.png" alt="Airtel Money" class="pay-logo">
+        <img src="images/visa-seeklogo.png" alt="Visa" class="pay-logo">
+        <img src="images/ma_symbol_opt_45_2x.png" alt="Mastercard" class="pay-logo">
+        <img src="images/mpesa-seeklogo.png" alt="M-Pesa" class="pay-logo">
+        <img src="images/unnamed.png" alt="Cash" class="pay-logo">
+    </div>
+</div>
+
+  <section class="strip">
+    <div class="strip-inner">
+
+        <div class="strip-lbl">
+            <h2>Trusted by businesses across East Africa</h2>
+        </div>
+
+        <div class="industry-slider">
+
+            <div class="industry-track">
+
+                <!-- Set 1 -->
+                <div class="industry-card salon">
+                    <div class="overlay"><span>Salons & Spas</span></div>
+                </div>
+
+                <div class="industry-card retail">
+                    <div class="overlay"><span> Retail Shops</span></div>
+                </div>
+
+                <div class="industry-card pharmacy">
+                    <div class="overlay"><span> Pharmacies</span></div>
+                </div>
+
+                <div class="industry-card coffee">
+                    <div class="overlay"><span> Coffee Shops</span></div>
+                </div>
+
+                <div class="industry-card wholesale">
+                    <div class="overlay"><span> Wholesale</span></div>
+                </div>
+
+                <div class="industry-card general">
+                    <div class="overlay"><span> General Merchandise</span></div>
+                </div>
+
+                <!-- Duplicate set for seamless loop -->
+                <div class="industry-card salon">
+                    <div class="overlay"><span> Salons & Spas</span></div>
+                </div>
+
+                <div class="industry-card retail">
+                    <div class="overlay"><span> Retail Shops</span></div>
+                </div>
+
+                <div class="industry-card pharmacy">
+                    <div class="overlay"><span> Pharmacies</span></div>
+                </div>
+
+                <div class="industry-card coffee">
+                    <div class="overlay"><span> Coffee Shops</span></div>
+                </div>
+
+                <div class="industry-card wholesale">
+                    <div class="overlay"><span> Wholesale</span></div>
+                </div>
+
+                <div class="industry-card general">
+                    <div class="overlay"><span> General Merchandise</span></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  </section>
+
+  <section class="home-feats">
+    <div class="section-inner">
+      <div class="reveal"><span class="section-tag">Features</span><h2>Run your whole business <span class="accent">from one place</span></h2><p class="sub">From the morning shift to end-of-day reports — mumo handles the busywork.</p></div>
+     
+      <div class="feature-slider">
+      <div class="feature-card active pos">
+        <div class="feature-overlay">
+            <h3>POS & Sales</h3>
+            <p>Fast checkout with cash, mobile money, and card. Shift reconciliation built in.</p>
+        </div>
+    </div>
+
+    <div class="feature-card inventory">
+        <div class="feature-overlay">
+            <h3>Inventory & Stock</h3>
+            <p>Real-time stock levels, low-stock alerts, and purchase order tracking.</p>
+        </div>
+    </div>
+
+    <div class="feature-card payroll">
+        <div class="feature-overlay">
+            <h3>Employees & Payroll</h3>
+            <p>Attendance, commissions and payroll generation.</p>
+        </div>
+    </div>
+
+    <div class="feature-card crm">
+        <div class="feature-overlay">
+            <h3>CRM & SMS</h3>
+            <p>Customer history, visits and SMS campaigns.</p>
+        </div>
+    </div>
+
+    <div class="feature-card reports">
+        <div class="feature-overlay">
+            <h3>Reports & Analytics</h3>
+            <p>Revenue, staff and inventory insights.</p>
+        </div>
+    </div>
+
+    <div class="feature-card dashboard">
+        <div class="feature-overlay">
+            <h3>Dashboard</h3>
+            <p>Manage all locations from one dashboard.</p>
+        </div>
+    </div>
+
+</div>
+      <div style="text-align:center;margin-top:32px"><button onclick="nav('features')" class="btn-outline">See all features →</button></div>
+    </div>
+  </section>
+
+
+<!-- PRODUCT TOUR -->
+  <section class="tour-section">
+    <div class="tour-blob tb1"></div><div class="tour-blob tb2"></div>
+    <div class="section-inner tour-inner">
+      <div class="tour-header reveal">
+        <span class="section-tag white">Interactive tour</span>
+        <h2 style="color:#fff">See mumo <span class="accent">in action</span></h2>
+        <p>Explore the actual screens your team will use every day.</p>
+        <div class="tour-tabs">
+          <button class="tour-tab active" onclick="switchTour('pos',this)">POS &amp; Sales</button>
+          <button class="tour-tab" onclick="switchTour('reports',this)">Reports</button>
+          <button class="tour-tab" onclick="switchTour('inventory',this)">Inventory</button>
+        </div>
+      </div>
+
+     <div class="tour-screen active" id="tour-pos">
+
+    <div class="tour-content">
+
+      
+
+        <h3>Process sales faster than ever</h3>
+
+        <p>
+            Accept cash, card and mobile money payments,
+            issue receipts instantly and track every
+            transaction in real time.
+        </p>
+
+        <button class="tour-btn">
+            Explore POS →
+        </button>
+
+    </div>
+
+    <div class="tour-showcase">
+
+        <div class="app-window">
+
+            <div class="window-bar">
+
+                <div class="window-dots">
+                    <span class="red"></span>
+                    <span class="yellow"></span>
+                    <span class="green"></span>
+                </div>
+
+                <div class="window-url">
+                    app.mumopos.com/pos
+                </div>
+
+            </div>
+
+            <div class="window-screen">
+
+                <img src="images/FireShot Capture 010 - mumo POS - [app.mumopos.com].png" alt="POS Dashboard">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="tour-screen" id="tour-reports">
+
+    <div class="tour-content">
+
+      
+
+<h3>Business insights in real time</h3>
+
+<p>
+Track revenue, top-performing staff,
+expenses and growth trends from a single dashboard.
+</p>
+        <button class="tour-btn">
+            Explore Reports →
+        </button>
+
+    </div>
+
+    <div class="tour-showcase">
+
+        <div class="app-window">
+
+            <div class="window-bar">
+
+                <div class="window-dots">
+                    <span class="red"></span>
+                    <span class="yellow"></span>
+                    <span class="green"></span>
+                </div>
+
+                <div class="window-url">
+                    app.mumopos.com/pos
+                </div>
+
+            </div>
+
+            <div class="window-screen">
+
+                <img src="images/reports-dashboard.jpg" alt="Reports Dashboard">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+      <div class="tour-screen" id="tour-inventory">
+
+    <div class="tour-content">
+
+
+<h3>Stay on top of your stock</h3>
+
+<p>
+Know exactly what's available,
+receive low-stock alerts and manage suppliers effortlessly.
+</p>
+
+        <button class="tour-btn">
+            Explore Inventory →
+        </button>
+
+    </div>
+
+    <div class="tour-showcase">
+
+        <div class="app-window">
+
+            <div class="window-bar">
+
+                <div class="window-dots">
+                    <span class="red"></span>
+                    <span class="yellow"></span>
+                    <span class="green"></span>
+                </div>
+
+                <div class="window-url">
+                    app.mumopos.com/pos
+                </div>
+
+            </div>
+
+            <div class="window-screen">
+
+                <img src="images/inventory-dashboard.jpg" alt="Inventory Dashboard">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+    </div>
+  </section>
+
+
+
+
+
+
+<section class="home-steps">
+    <div class="section-inner">
+
+        <div class="steps-header reveal">
+            <span class="section-tag blue">How it works</span>
+
+            <h2>
+                Up and running
+                <span class="accent-b">in minutes</span>
+            </h2>
+
+            <p>
+                Get your business online and start selling in just three simple steps.
+            </p>
+        </div>
+
+        <div class="steps-grid">
+
+            <!-- STEP 1 -->
+            <div class="step-card reveal d1">
+
+                <div class="step-number">01</div>
+
+                <div class="step-icon"><i class="fa-solid fa-user"></i></div>
+
+                <h3>Create your account</h3>
+
+                <p>
+                    Choose your business type, add store details and create your admin account.
+                </p>
+
+                <div class="step-preview">
+                    <img src="images/man-using-keyboard-computer-laptop-login-interface-touch-screen-user-name-password-inputs-virtual-digital-account-online-concept-technology.webp" alt="">
+                </div>
+
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="step-card reveal d2">
+
+                <div class="step-number">02</div>
+
+                <div class="step-icon"><i class="fa-solid fa-box"></i></div>
+
+                <h3>Set up your catalog</h3>
+
+                <p>
+                    Add products, services, pricing and invite staff members.
+                </p>
+
+                <div class="step-preview">
+                    <img src="images/african-american-worker-writing-inventory-list-while-checking-stock-storage-room.webp" alt="">
+                </div>
+
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="step-card reveal d3">
+
+                <div class="step-number">03</div>
+
+                <div class="step-icon"><i class="fa-solid fa-credit-card"></i></div>
+
+                <h3>Start selling</h3>
+
+                <p>
+                    Process transactions and monitor performance in real time.
+                </p>
+
+                <div class="step-preview">
+                    <img src="images/african-female-signing-proof-delivery-while-receiving-parcel-from-courier.webp" alt="">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="steps-cta">
+            <button onclick="nav('how')" class="btn-outline">
+                Learn More →
+            </button>
+        </div>
+
+    </div>
+</section>
+
+
+
+<section class="cta-section cta-home">
+
+  <div class="cta-card cta-card-wide reveal">
+
+    <div class="cta-home-grid">
+
+      <!-- LEFT -->
+      <div class="cta-content">
+
+        <h2>Ready to get started?</h2>
+
+        <p>
+          Join 500+ businesses across East Africa managing their operations
+          with Mumo POS.
+        </p>
+
+        <div class="cta-actions">
+
+          <a href="https://app.mumopos.com/onboarding" class="cta-btn">
+            Create Free Account
+            <span class="arrow">→</span>
+          </a>
+
+          <button onclick="nav('demo')" class="cta-btn cta-btn-outline">
+            Book a Demo
+            <span class="arrow">→</span>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<footer class="footer">
+
+    <div class="footer-card">
+
+        <div class="footer-main">
+
+            <!-- Brand -->
+            <div class="footer-brand">
+
+                <img
+                    src="images/mumo2-POS-Y.png"
+                    alt="Mumo POS"
+                    class="footer-logo"
+                >
+
+                <p>
+                    The complete POS platform for salons, spas,
+                    pharmacies, coffee shops and retail businesses
+                    across East Africa.
+                </p>
+
+                <div class="footer-badge">
+                    Trusted by 500+ businesses across East Africa
+                </div>
+
+                <div class="socials">
+
+                    <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+
+                </div>
+
+            </div>
+
+            <!-- Links -->
+
+            <div class="footer-links">
+
+                <div>
+                    <h4>Product</h4>
+
+                    <a href="#" onclick="nav('features');return false;">Features</a>
+                    <a href="#" onclick="nav('pricing');return false;">Pricing</a>
+                    <a href="#">Inventory</a>
+                    <a href="#">Reports</a>
+                    <a href="#">Integrations</a>
+                </div>
+
+                <div>
+                    <h4>Resources</h4>
+
+                    <a href="#">Help Center</a>
+                    <a href="#">Guides</a>
+                    <a href="#">FAQs</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Documentation</a>
+                </div>
+
+                <div>
+                    <h4>Company</h4>
+
+                    <a href="#" onclick="nav('demo');return false;">Book a Demo</a>
+                    <a href="#">About Us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Partners</a>
+                </div>
+
+                <div>
+                    <h4>Contact</h4>
+
+                    <a href="mailto:hello@mumopos.com">
+                        hello@mumopos.com
+                    </a>
+
+                    <a href="#">
+                        Kampala, Uganda
+                    </a>
+
+                    <a href="#">
+                        WhatsApp Support
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 Mumo POS. Built for East Africa.
+            </span>
+
+            <div class="legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookies Settings</a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-watermark">
+        MUMO
+    </div>
+
+</footer>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== PRICING Page========== -->
+<div class="page" id="page-pricing">
+  <div class="pricing-hero">
+    <div class="reveal">
+      <span class="section-tag">Simple pricing</span>
+      <h1>Start free. <span class="accent">Scale when ready.</span></h1>
+      <p>No hidden fees. No monthly contracts. Pay only if your business grows beyond the free tier.</p>
+      <div class="pricing-toggle">
+        <span class="toggle-label active" id="monthly-lbl">Monthly</span>
+        <div class="toggle-wrap" id="billingToggle" onclick="toggleBilling()"><div class="toggle-dot"></div></div>
+        <span class="toggle-label" id="annual-lbl">Annual</span>
+        <span class="annual-badge">Save 20%</span>
+      </div>
+    </div>
+  </div>
+  <div class="pricing-grid">
+    <div class="plan-card free reveal d1">
+      <div class="plan-name">Free</div>
+      <div class="plan-price"><span class="amount">UGX 0</span><span class="period"> / month</span></div>
+      <div class="plan-desc">Perfect for solo operators and new businesses just getting started.</div>
+      <div class="plan-features">
+        <div class="pf"><div class="pf-icon yes">✓</div>1 branch, 1 cashier</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Up to 50 transactions/month</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Basic POS &amp; sales</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Daily revenue reports</div>
+        <div class="pf"><div class="pf-icon no">✗</div><span style="color:#ccc">Staff commissions</span></div>
+        <div class="pf"><div class="pf-icon no">✗</div><span style="color:#ccc">SMS campaigns</span></div>
+        <div class="pf"><div class="pf-icon no">✗</div><span style="color:#ccc">Inventory management</span></div>
+      </div>
+      <button class="plan-btn" onclick="window.open('https://app.mumopos.com/onboarding')">Get Started Free</button>
+    </div>
+    <div class="plan-card pro reveal d2">
+      <div class="popular-badge">Most Popular</div>
+      <div class="plan-name" style="color:#fff">Pro</div>
+      <div class="plan-price">
+        <span class="amount" id="pro-price">UGX 49k</span><span class="period" style="color:rgba(255,255,255,.4)"> / month</span>
+      </div>
+      <div class="plan-desc">For growing businesses that need full control over staff, stock and customers.</div>
+      <div class="plan-features">
+        <div class="pf"><div class="pf-icon yes">✓</div>1 branch, unlimited cashiers</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Unlimited transactions</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Full POS + inventory</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Staff commissions &amp; payroll</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>CRM + 100 SMS/month</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Advanced reports</div>
+        <div class="pf"><div class="pf-icon no">✗</div><span style="color:rgba(255,255,255,.3)">Multi-branch</span></div>
+      </div>
+      <button class="plan-btn" onclick="window.open('https://app.mumopos.com/onboarding')">Start Pro Trial</button>
+    </div>
+    <div class="plan-card business reveal d3">
+      <div class="plan-name">Business</div>
+      <div class="plan-price">
+        <span class="amount" id="biz-price">UGX 99k</span><span class="period"> / month</span>
+      </div>
+      <div class="plan-desc">For multi-location businesses that need full visibility across branches.</div>
+      <div class="plan-features">
+        <div class="pf"><div class="pf-icon yes">✓</div>Up to 5 branches</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Unlimited transactions</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Everything in Pro</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Cross-branch reporting</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>500 SMS/month</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Priority support</div>
+        <div class="pf"><div class="pf-icon yes">✓</div>Custom roles &amp; permissions</div>
+      </div>
+      <button class="plan-btn" onclick="nav('demo')">Book a Demo</button>
+    </div>
+  </div>
+
+<div class="faq-section">
+  <div class="container">
+
+    <div class="faq-header reveal">
+      <span class="section-tag">Pricing FAQs</span>
+      <h2>Frequently asked <span class="accent">questions</span></h2>
+      <p>Everything you need to know about pricing and billing.</p>
+    </div>
+
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Is the free plan really free forever?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Yes. The free plan is free forever — no credit card, no trial period. You only need to upgrade if you exceed 50 transactions a month or need features like staff commissions or SMS.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Can I switch plans at any time?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Absolutely. You can upgrade or downgrade at any time from your account settings. Upgrades take effect immediately; downgrades apply at the end of your billing period.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>How do I pay?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          We accept MTN MoMo, Airtel Money, Visa, and Mastercard. Monthly billing is automatic. Annual billing gives you a 20% discount.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>What happens if I exceed my transaction limit?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          We'll notify you when you're approaching the limit. Your service won't be interrupted — we'll just ask you to upgrade before the next billing cycle.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
+<!-- ========== FEATURES ========== -->
+<div class="page" id="page-features">
+  <div class="feat-hero"><div class="feat-hero-inner"><div class="reveal"><span class="section-tag">Everything you need</span><h1>Features built for <span class="accent">real businesses</span></h1><p class="sub" style="margin:10px auto 0">Every tool you need to sell, manage, and grow — designed for East Africa.</p></div><div class="feat-tabs"><button class="feat-tab active" onclick="switchTab('salons',this)">For Salons</button><button class="feat-tab" onclick="switchTab('retail',this)">For Retail</button></div></div></div>
+  <div id="tab-salons">
+    <section class="feat-section"><div class="feat-big-grid"><div class="reveal"><span class="section-tag">Point of Sale</span><h2>Checkout in <span class="accent">seconds</span></h2><p class="sub">Ring up any service instantly. Accept cash, mobile money, and card — all reconciled automatically.</p><div class="feat-list"><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Multi-payment support</h4><p>Cash, mobile money, and card in one transaction.</p></div></div><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Shift reconciliation</h4><p>Open and close shifts with automatic cash count and discrepancy alerts.</p></div></div><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>SMS receipts</h4><p>Send digital receipts via SMS — no printer needed.</p></div></div></div></div><div class="reveal d2"><div class="feat-visual"><div class="mini-card"><div class="mini-row"><span class="mini-lbl">Service</span><span class="mini-val">Hair Braiding</span></div><div class="mini-row"><span class="mini-lbl">Amount</span><span class="mini-val o">UGX 45,000</span></div><div class="mini-row"><span class="mini-lbl">Payment</span><span class="mini-badge">MTN MoMo ✓</span></div></div><div class="mini-card"><div class="mini-row"><span class="mini-lbl">Shift Balance</span><span class="mini-val o">UGX 847,000</span></div><div class="progress"><div class="progress-fill" style="width:72%"></div></div></div></div></div></div></section>
+    <section class="feat-section"><div class="feat-big-grid flip"><div class="reveal"><span class="section-tag">Staff &amp; Commissions</span><h2>Payroll in <span class="accent">minutes</span></h2><p class="sub">Every service is automatically attributed to the right staff member.</p><div class="feat-list"><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Per-service attribution</h4><p>Every sale linked to the staff who performed it.</p></div></div><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Flexible commission rates</h4><p>Set flat or percentage commissions per staff or service.</p></div></div><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>One-click payroll export</h4><p>Generate payroll summaries and export to PDF or CSV.</p></div></div></div></div><div class="reveal d2"><div class="feat-visual"><div style="color:rgba(255,255,255,.5);font-size:.75rem;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">This Week's Commissions</div><div style="display:flex;flex-direction:column;gap:10px"><div><div class="mini-row"><span class="mini-val" style="font-size:.85rem">Alice M.</span><span class="mini-val o">UGX 96,000</span></div><div class="progress"><div class="progress-fill" style="width:80%"></div></div></div><div><div class="mini-row"><span class="mini-val" style="font-size:.85rem">Brian K.</span><span class="mini-val o">UGX 72,000</span></div><div class="progress"><div class="progress-fill" style="width:60%"></div></div></div><div><div class="mini-row"><span class="mini-val" style="font-size:.85rem">Sarah N.</span><span class="mini-val o">UGX 54,000</span></div><div class="progress"><div class="progress-fill" style="width:45%"></div></div></div></div><div class="mini-card" style="margin-top:12px"><div class="mini-row"><span class="mini-lbl">Total Payroll</span><span class="mini-val o">UGX 222,000</span></div></div></div></div></div></section>
+    <section class="feat-section" style="background:var(--cream)"><div class="section-inner reveal" style="text-align:center"><span class="section-tag">Results</span><h2>mumo by the <span class="accent">numbers</span></h2></div><div class="feat-stat-row"><div class="feat-stat reveal d1"><div class="num">3 min</div><div class="label">Average setup time</div></div><div class="feat-stat reveal d2"><div class="num">40%</div><div class="label">Less time on admin</div></div><div class="feat-stat reveal d3"><div class="num">500+</div><div class="label">Businesses on mumo</div></div></div></section>
+  </div>
+  <div id="tab-retail" style="display:none">
+    <section class="feat-section"><div class="feat-big-grid"><div class="reveal"><span class="section-tag">Inventory</span><h2>Never run out of <span class="accent">stock again</span></h2><p class="sub">Real-time inventory tracking with automatic low-stock alerts.</p><div class="feat-list"><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Live stock levels</h4><p>See exactly what's in stock across all locations.</p></div></div><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Low-stock alerts</h4><p>Get notified before you run out so you can reorder in time.</p></div></div><div class="fl-item"><div class="fl-check">✓</div><div class="fl-text"><h4>Purchase orders</h4><p>Create and track purchase orders directly from mumo.</p></div></div></div></div><div class="reveal d2"><div class="feat-visual"><div class="mini-card"><div class="mini-row"><span class="mini-lbl">Sunscreen SPF50</span><span style="color:#f87171;font-size:.78rem;font-weight:600">⚠ 3 left</span></div><div class="progress"><div class="progress-fill" style="width:15%;background:linear-gradient(90deg,#f87171,#f8a171)"></div></div></div><div class="mini-card"><div class="mini-row"><span class="mini-lbl">Shampoo 500ml</span><span class="mini-val o">28 units</span></div><div class="progress"><div class="progress-fill" style="width:65%"></div></div></div><div class="mini-card"><div class="mini-row"><span class="mini-lbl">Hair Oil 200ml</span><span class="mini-val o">54 units</span></div><div class="progress"><div class="progress-fill" style="width:90%"></div></div></div></div></div></div></section>
+    <section class="feat-section" style="background:var(--cream)"><div class="section-inner reveal" style="text-align:center"><span class="section-tag">Results</span><h2>mumo by the <span class="accent">numbers</span></h2></div><div class="feat-stat-row"><div class="feat-stat reveal d1"><div class="num">3 min</div><div class="label">Average setup time</div></div><div class="feat-stat reveal d2"><div class="num">98%</div><div class="label">Inventory accuracy</div></div><div class="feat-stat reveal d3"><div class="num">500+</div><div class="label">Businesses on mumo</div></div></div></section>
+  </div>
+  <div style="text-align:center;padding:40px 32px 0"><button onclick="nav('demo')" class="btn-primary" style="padding:15px 36px;font-size:1rem">Book a free demo →</button></div>
+  <footer><div class="footer-inner"><div class="footer-top"><div class="footer-brand"><span class="logo-text" style="display:block;margin-bottom:8px;cursor:pointer" onclick="nav('home')">mu<span style="color:var(--blue)">·</span>mo</span><p>The complete POS for East Africa.</p></div><div class="footer-col"><h4>Product</h4><button onclick="nav('features')">Features</button><button onclick="nav('pricing')">Pricing</button><button onclick="nav('salons')">For Salons</button></div><div class="footer-col"><h4>Company</h4><button onclick="nav('demo')">Book a Demo</button><a href="https://app.mumopos.com/login">Sign In</a></div><div class="footer-col"><h4>Contact</h4><a href="mailto:hello@mumopos.com">hello@mumopos.com</a><a>Kampala, Uganda</a></div></div><div class="footer-bottom"><span>© 2026 mumo POS.</span><div><a href="#">Privacy</a><a href="#">Terms</a></div></div></div></footer>
+</div>
+
+<!-- ========== HOW IT WORKS ========== -->
+<div class="page" id="page-how">
+  <div class="how-hero"><div class="reveal"><span class="section-tag white">Simple process</span><h1 style="color:#fff">Up and running in <span class="accent">3 steps</span></h1><p>No technical skills needed. If you can use a smartphone, you can use mumo POS.</p></div></div>
+  <section class="scroll-timeline">
+ <div class="container">
+  <div class="scroll-item">
+    <div class="sticky">
+
+      <div class="step-num">01</div>
+
+      <div class="content">
+        <h2>Choose your business type</h2>
+        <p>Salon, retail, pharmacy, café — mumo is pre-configured for your industry.</p>
+        <span class="tag">30 seconds</span>
+      </div>
+
+      <div class="visual">
+        <img src="images/african-american-worker-writing-inventory-list-while-checking-stock-storage-room.webp" />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="scroll-item">
+    <div class="sticky">
+
+      <div class="step-num">02</div>
+
+      <div class="content">
+        <h2>Add your store details</h2>
+        <p>Business name, location, currency (UGX, KES, TZS, RWF) and contact info.</p>
+        <span class="tag">Under 2 minutes</span>
+      </div>
+
+      <div class="visual">
+        <img src="images/african-female-signing-proof-delivery-while-receiving-parcel-from-courier.webp" />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="scroll-item">
+    <div class="sticky">
+
+      <div class="step-num">03</div>
+
+      <div class="content">
+        <h2>Add services or products</h2>
+        <p>Type in your services with prices. Import spreadsheets for bulk upload.</p>
+        <span class="tag">Fast setup</span>
+      </div>
+
+      <div class="visual">
+        <img src="images/latino-hair-salon-owner-taking-care-client.webp" />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="scroll-item">
+    <div class="sticky">
+
+      <div class="step-num">04</div>
+
+      <div class="content">
+        <h2>Invite your team</h2>
+        <p>Add staff, roles, commissions. They receive a PIN to clock in instantly.</p>
+        <span class="tag">30 seconds per person</span>
+      </div>
+
+      <div class="visual">
+        <img src="images/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.jpg" />
+      </div>
+
+    </div>
+  </div>
+
+  <div class="scroll-item">
+    <div class="sticky">
+
+      <div class="step-num">05</div>
+
+      <div class="content">
+        <h2>Open & manage shifts</h2>
+        <p>Start your shift, enter cash, and begin selling immediately.</p>
+        <span class="tag live">You're live 🎉</span>
+      </div>
+
+      <div class="visual">
+        <img src="images/five-multiracial-business-womans-standing-office-roll-woman-chair-diverse-group-female-employees-formal-wear-having-fun.webp" />
+      </div>
+
+    </div>
+  </div>
+ </div>
+</section>
+<section class="faq-section">
+
+  <div class="container">
+
+    <div class="faq-header reveal">
+      <span class="section-tag">FAQs</span>
+      <h2>Common <span class="accent">questions</span></h2>
+      <p>Everything you need to know about mumo.</p>
+    </div>
+
+    <div class="faq-list">
+
+      <!-- ITEM -->
+      <div class="faq-item active">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Do I need internet to use mumo?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          mumo works best with internet for real-time syncing. Basic sales can still be recorded offline and will sync when connectivity is restored.
+        </div>
+      </div>
+
+      <!-- ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>What devices does mumo run on?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          mumo runs in any modern browser — Chrome, Firefox, Safari. Works on smartphones, tablets, and computers. No special hardware required.
+        </div>
+      </div>
+
+      <!-- ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>Can I run multiple branches?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          Yes. Manage multiple locations from one account. Each branch has its own shifts, inventory, and staff — with a unified dashboard.
+        </div>
+      </div>
+
+      <!-- ITEM -->
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          <span>What support is available?</span>
+          <div class="icon">+</div>
+        </button>
+        <div class="faq-answer">
+          WhatsApp support 8am–8pm EAT, email support, and video onboarding calls. We support English, Luganda, and Swahili.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+ <div class="cta-section">
+  <div class="cta-card">
+    <h2>Still have questions?</h2>
+    <p>Our team is happy to walk you through Mumo in a live demo.</p>
+
+    <button onclick="nav('demo')" class="cta-btn">
+      Book a Free Demo
+      <span class="arrow">→</span>
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ========== SALONS ========== -->
+<div class="page" id="page-salons">
+  <div class="salon-hero"><div class="salon-blob sb1"></div><div class="salon-blob sb2"></div><div class="salon-hero-inner"><div><span class="section-tag">For Salons &amp; Beauty</span><h1>Your salon, <span class="accent">your way</span></h1><p>Whether you're a solo stylist or managing a team of twelve, mumo keeps your commissions, cash, and customers on one screen.</p><div class="hero-btns" style="margin-top:0"><a href="https://app.mumopos.com/onboarding" class="btn-primary">Set up your salon</a><button onclick="nav('demo')" class="btn-hero-outline">See a demo</button></div><div class="salon-proof"><div class="sp-item"><div class="sp-num">200+</div><div class="sp-lbl">Salons on mumo</div></div><div class="sp-item"><div class="sp-num">4.9★</div><div class="sp-lbl">Average rating</div></div><div class="sp-item"><div class="sp-num">3 min</div><div class="sp-lbl">To get started</div></div></div></div><div class="salon-vis"><div class="sv-title">Today's Staff Performance</div><div><div class="sv-row2"><div class="sv-avatar" style="background:var(--orange)">AM</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="sv-name">Alice M.</span><span class="sv-amt">UGX 480k</span></div><div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:80%"></div></div></div></div><div class="sv-row2"><div class="sv-avatar" style="background:var(--blue)">BK</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="sv-name">Brian K.</span><span class="sv-amt">UGX 360k</span></div><div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:60%"></div></div></div></div><div class="sv-row2"><div class="sv-avatar" style="background:#4ade80;color:#111">SN</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="sv-name">Sarah N.</span><span class="sv-amt">UGX 220k</span></div><div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:37%"></div></div></div></div></div><div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:1fr 1fr;gap:8px"><div style="background:rgba(246,157,57,.1);border-radius:10px;padding:10px;text-align:center"><div style="font-family:'Oswald',sans-serif;color:var(--orange);font-size:1.1rem">UGX 1.06M</div><div style="color:rgba(255,255,255,.4);font-size:.7rem;margin-top:2px">Total Revenue</div></div><div style="background:rgba(59,117,151,.15);border-radius:10px;padding:10px;text-align:center"><div style="font-family:'Oswald',sans-serif;color:#7dc8f7;font-size:1.1rem">14 clients</div><div style="color:rgba(255,255,255,.4);font-size:.7rem;margin-top:2px">Served Today</div></div></div></div></div></div>
+<section class="salon-why" style="background:var(--cream)">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Why salon owners love Mumo</span>
+      <h2>Everything a salon needs, <span class="accent">nothing it doesn't</span></h2>
+    </div>
+
+    <div class="salon-why-tabs">
+      <button class="salon-why-tab active" onclick="switchSalonTab('pos',this)">Fast Checkout</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('commission',this)">Commission Tracking</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('sms',this)">Customer Retention</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('analytics',this)">Top Services</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('security',this)">Staff Control</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('retail',this)">Retail Management</button>
+    </div>
+
+    <!-- TAB CONTENT: Fast Checkout -->
+    <div class="salon-why-content active" id="salon-tab-pos">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Fast Checkout for Any Client</h3>
+          <p>Whether it's a walk-in or a pre-booked appointment, mumo lets you ring up any service in seconds. Accept cash, mobile money (MTN MoMo, Airtel Money, M-Pesa), or card payments all in one place.</p>
+          <div class="salon-why-features">
+            <div class="swf-item">
+              <div class="swf-icon">⚡</div>
+              <div>
+                <h4>Instant payment processing</h4>
+                <p>Multiple payment methods in a single transaction</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">🧾</div>
+              <div>
+                <h4>Automatic receipts</h4>
+                <p>SMS or printed receipts sent instantly to customers</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">📊</div>
+              <div>
+                <h4>Shift reconciliation</h4>
+                <p>Auto-close shifts with cash count and discrepancy alerts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="salon-why-visual">
+          <img src="images/latino-hair-salon-owner-taking-care-client.webp" alt="Fast Checkout">
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT: Commission Tracking -->
+    <div class="salon-why-content" id="salon-tab-commission">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Automatic Commission Tracking</h3>
+          <p>Every service is instantly attributed to the stylist who performed it. Set flat or percentage commissions per staff member or service type, and generate payroll in minutes.</p>
+          <div class="salon-why-features">
+            <div class="swf-item">
+              <div class="swf-icon">👥</div>
+              <div>
+                <h4>Per-service attribution</h4>
+                <p>Every sale linked to the right staff member automatically</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">💰</div>
+              <div>
+                <h4>Flexible commission rates</h4>
+                <p>Set flat fee or percentage commissions per service</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">📋</div>
+              <div>
+                <h4>One-click payroll export</h4>
+                <p>Generate summaries and export to PDF or CSV instantly</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="salon-why-visual">
+          <img src="images/portrait-cheerful-person-reading-messages-mobile-phone.webp" alt="Commission Tracking">
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT: SMS Marketing -->
+    <div class="salon-why-content" id="salon-tab-sms">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Customer Retention with SMS Campaigns</h3>
+          <p>Keep your regular customers coming back with targeted SMS campaigns. Build customer profiles, track visit history, and send personalized promotions to boost repeat business.</p>
+          <div class="salon-why-features">
+            <div class="swf-item">
+              <div class="swf-icon">📱</div>
+              <div>
+                <h4>Targeted SMS campaigns</h4>
+                <p>Send promotions to specific customer segments</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">👤</div>
+              <div>
+                <h4>Customer profiles</h4>
+                <p>Store visit history, preferences, and contact info</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">📈</div>
+              <div>
+                <h4>Drive repeat business</h4>
+                <p>Increase customer lifetime value with smart retention</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="salon-why-visual">
+          <img src="images/man-using-keyboard-computer-laptop-login-interface-touch-screen-user-name-password-inputs-virtual-digital-account-online-concept-technology.webp" alt="Customer Retention">
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT: Analytics -->
+    <div class="salon-why-content" id="salon-tab-analytics">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Know Your Top Performing Services</h3>
+          <p>Track which services are making you the most money, which stylists are the most productive, and identify trends to grow your revenue. Make data-driven decisions for your salon.</p>
+          <div class="salon-why-features">
+            <div class="swf-item">
+              <div class="swf-icon">📊</div>
+              <div>
+                <h4>Service performance reports</h4>
+                <p>See which services generate the most revenue</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">⭐</div>
+              <div>
+                <h4>Staff productivity insights</h4>
+                <p>Identify your top performers and busiest times</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">📈</div>
+              <div>
+                <h4>Growth trends</h4>
+                <p>Track weekly and monthly revenue patterns</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="salon-why-visual">
+          <img src="images/african-american-worker-writing-inventory-list-while-checking-stock-storage-room.webp" alt="Analytics">
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT: Security -->
+    <div class="salon-why-content" id="salon-tab-security">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Staff PINs & Access Control</h3>
+          <p>Secure your business with unique staff PINs and role-based access control. Track who did what, prevent unauthorized access, and protect your sales data.</p>
+          <div class="salon-why-features">
+            <div class="swf-item">
+              <div class="swf-icon">🔐</div>
+              <div>
+                <h4>Unique staff PINs</h4>
+                <p>Each team member has their own secure access</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">👮</div>
+              <div>
+                <h4>Role-based permissions</h4>
+                <p>Control what each staff member can access</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">📝</div>
+              <div>
+                <h4>Full audit trail</h4>
+                <p>Track all transactions and user actions</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="salon-why-visual">
+          <img src="images/cashier.webp" alt="Staff Security">
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB CONTENT: Retail -->
+    <div class="salon-why-content" id="salon-tab-retail">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Track Retail Products Too</h3>
+          <p>Manage your salon's retail products (shampoos, serums, oils, etc.) with automatic stock tracking. Get low-stock alerts and manage suppliers directly from mumo.</p>
+          <div class="salon-why-features">
+            <div class="swf-item">
+              <div class="swf-icon">📦</div>
+              <div>
+                <h4>Real-time inventory</h4>
+                <p>See exactly what's in stock at any time</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">⚠️</div>
+              <div>
+                <h4>Low-stock alerts</h4>
+                <p>Get notified before you run out of products</p>
+              </div>
+            </div>
+            <div class="swf-item">
+              <div class="swf-icon">🏪</div>
+              <div>
+                <h4>Supplier management</h4>
+                <p>Track purchase orders and supplier info</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="salon-why-visual">
+          <img src="images/african-female-signing-proof-delivery-while-receiving-parcel-from-courier.webp" alt="Retail Management">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="testimonials-full">
+
+  <div class="section-inner">
+    <div class="center reveal">
+      <span class="section-tag blue">Real stories</span>
+      <h2>Salon owners <span class="accent-b">love Mumo</span></h2>
+    </div>
+  </div>
+
+  <div class="test-track apple-focus">
+
+    <!-- CARD 1 -->
+    <div class="test-card">
+      <div class="glow"></div>
+
+      <div class="test-stars">★★★★★</div>
+
+      <p class="test-text">
+        “Before Mumo I had no idea which stylist was making me the most money. Now I see everything in real time.”
+      </p>
+
+      <div class="impact">📈 +38% revenue visibility</div>
+
+      <div class="test-author">
+        <div class="test-avatar">GN</div>
+
+        <div>
+          <div class="test-name">
+            Grace Nakato <span class="verified">✔ Verified</span>
+          </div>
+          <div class="test-role">Glow Beauty Studio, Kampala</div>
+        </div>
+      </div>
+
+      <div class="company-logo">Glow Beauty Studio</div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="test-card">
+      <div class="glow"></div>
+
+      <div class="test-stars">★★★★★</div>
+
+      <p class="test-text">
+        “Now I check my business from my phone anywhere. I finally feel in control.”
+      </p>
+
+      <div class="impact">📊 -70% cash errors</div>
+
+      <div class="test-author">
+        <div class="test-avatar blue">JM</div>
+
+        <div>
+          <div class="test-name">
+            James Mwangi <span class="verified">✔ Verified</span>
+          </div>
+          <div class="test-role">Vibe Cuts, Nairobi</div>
+        </div>
+      </div>
+
+      <div class="company-logo">Vibe Cuts</div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="test-card">
+      <div class="glow"></div>
+
+      <div class="test-stars">★★★★★</div>
+
+      <p class="test-text">
+        “I manage 3 branches from one dashboard. Everything is finally organized.”
+      </p>
+
+      <div class="impact">🏬 3 branches unified</div>
+
+      <div class="test-author">
+        <div class="test-avatar green">AM</div>
+
+        <div>
+          <div class="test-name">
+            Amina Mohamed <span class="verified">✔ Verified</span>
+          </div>
+          <div class="test-role">Amina Group, Dar</div>
+        </div>
+      </div>
+
+      <div class="company-logo">Amina Group</div>
+    </div>
+
+  </div>
+
+</section>
+
+<div class="cta-section">
+
+  <div class="cta-card reveal">
+
+    <h2>Ready to transform your salon?</h2>
+
+    <p>
+      Join 200+ salon owners across East Africa who trust Mumo to manage
+      appointments, staff, inventory, and sales.
+    </p>
+
+    <div class="cta-actions">
+
+      <a href="https://app.mumopos.com/onboarding" class="cta-btn">
+        Start Free Today
+        <span class="arrow">→</span>
+      </a>
+
+      <button onclick="nav('demo')" class="cta-btn cta-btn-outline">
+        Book a Demo
+        <span class="arrow">→</span>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- ========== FOOD & BEVERAGES ========== -->
+<div class="page" id="page-food">
+  <div class="salon-hero">
+    <div class="salon-blob sb1"></div>
+    <div class="salon-blob sb2"></div>
+    <div class="salon-hero-inner">
+      <div>
+        <span class="section-tag">For Food & Beverages</span>
+        <h1>Your kitchen, <span class="accent">your way</span></h1>
+        <p>Whether you're a caf�, restaurant, bakery, or bar, mumo keeps orders, payments, and stock flowing smoothly.</p>
+        <div class="hero-btns" style="margin-top:0">
+          <a href="https://app.mumopos.com/onboarding" class="btn-primary">Set up your restaurant</a>
+          <button onclick="nav('demo')" class="btn-hero-outline">See a demo</button>
+        </div>
+        <div class="salon-proof">
+          <div class="sp-item">
+            <div class="sp-num">300+</div>
+            <div class="sp-lbl">Restaurants on mumo</div>
+          </div>
+          <div class="sp-item">
+            <div class="sp-num">4.8?</div>
+            <div class="sp-lbl">Average rating</div>
+          </div>
+          <div class="sp-item">
+            <div class="sp-num">5 min</div>
+            <div class="sp-lbl">To get started</div>
+          </div>
+        </div>
+      </div>
+      <div class="salon-vis">
+        <div class="sv-title">Today's Sales Snapshot</div>
+        <div>
+          <div class="sv-row2">
+            <div class="sv-avatar" style="background:var(--orange)">KT</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between">
+                <span class="sv-name">Kitchen</span><span class="sv-amt">UGX 520k</span>
+              </div>
+              <div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:83%"></div></div>
+            </div>
+          </div>
+          <div class="sv-row2">
+            <div class="sv-avatar" style="background:var(--blue)">BD</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between">
+                <span class="sv-name">Bar</span><span class="sv-amt">UGX 410k</span>
+              </div>
+              <div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:65%"></div></div>
+            </div>
+          </div>
+          <div class="sv-row2">
+            <div class="sv-avatar" style="background:#4ade80;color:#111">FR</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between">
+                <span class="sv-name">Front</span><span class="sv-amt">UGX 230k</span>
+              </div>
+              <div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:46%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><section class="salon-why" style="background:var(--cream)">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Why food & beverage teams love Mumo</span>
+      <h2>Everything your kitchen needs, <span class="accent">nothing it doesn't</span></h2>
+    </div>
+
+    <div class="salon-why-tabs">
+      <button class="salon-why-tab active" onclick="switchSalonTab('food-orders',this)">Quick Orders</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('food-stock',this)">Inventory & Waste</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('food-shifts',this)">Staff Shifts</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('food-customers',this)">Customer Orders</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('food-reports',this)">Reports</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('food-payments',this)">Payments</button>
+    </div>
+
+    <div class="salon-why-content active" id="salon-tab-food-orders">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Quick ordering for every table</h3>
+          <p>Take dine-in, takeaway, or delivery orders with one fast workflow. Manage menus, combos, and kitchen prep from a single screen.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">🍽️</div><div><h4>Menu-ready checkout</h4><p>Process orders in seconds and send tickets to the kitchen instantly.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">📱</div><div><h4>Table & takeaway support</h4><p>Handle dine-in, pickup, and delivery with the same seamless flow.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">⏱️</div><div><h4>Faster service</h4><p>Reduce wait time and speed up order fulfillment.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/latino-hair-salon-owner-taking-care-client.webp" alt="Quick Orders"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-food-stock">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Inventory control that cuts waste</h3>
+          <p>Track ingredient levels, recipe usage, and expiry alerts so you never run out of core supplies or over-order perishables.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">📦</div><div><h4>Ingredient tracking</h4><p>Monitor stock down to the ingredient level.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">⚠️</div><div><h4>Waste alerts</h4><p>Get notified when inventory is low or nearing expiry.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">📋</div><div><h4>Purchase planning</h4><p>Reorder the right items before service peaks.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/african-american-worker-writing-inventory-list-while-checking-stock-storage-room.webp" alt="Inventory & Waste"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-food-shifts">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Staff shifts and service crews</h3>
+          <p>Schedule servers, cooks, and bar staff with clear shift summaries, sales split, and role-based access for every team member.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">👥</div><div><h4>Shift planning</h4><p>Assign teams with ease for every service period.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💼</div><div><h4>Role access</h4><p>Give kitchen and floor staff the tools they need, without extra controls.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🏃</div><div><h4>Performance tracking</h4><p>See who sells the most and where service is strongest.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/cashier.webp" alt="Staff Shifts"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-food-customers">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Customer orders made seamless</h3>
+          <p>Keep track of repeat guests, delivery addresses, and special requests so every order feels personalized.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">🧾</div><div><h4>Order history</h4><p>See what your regulars love and serve them faster.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💬</div><div><h4>Notes & preferences</h4><p>Store dietary notes and favorite dishes on each customer.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">⭐</div><div><h4>Better loyalty</h4><p>Make repeat guests feel recognized and valued.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/portrait-cheerful-person-reading-messages-mobile-phone.webp" alt="Customer Orders"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-food-reports">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Reports built for hospitality</h3>
+          <p>Analyze sales by menu item, busiest shifts, and service efficiency so you can make smarter decisions every day.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">📈</div><div><h4>Menu analytics</h4><p>See which dishes are selling best and which need attention.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🕒</div><div><h4>Shift summaries</h4><p>Review peak times and staff performance after every service.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💵</div><div><h4>Profit insights</h4><p>Understand revenue and cost drivers across your food business.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/reports-dashboard.jpg" alt="Reports"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-food-payments">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Payments that keep service moving</h3>
+          <p>Accept cash, mobile money, and card with fast checkouts, split bills, and digital receipts for every table.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">💳</div><div><h4>Split bill support</h4><p>Handle shared tables and partial payments with ease.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">📲</div><div><h4>Mobile money ready</h4><p>Accept local mobile payments quickly and securely.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🧾</div><div><h4>Digital receipts</h4><p>Send receipts instantly by SMS or email.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/FireShot Capture 010 - mumo POS - [app.mumopos.com].png" alt="Payments"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="testimonials-full">
+
+  <div class="section-inner">
+    <div class="center reveal">
+      <span class="section-tag blue">Real stories</span>
+      <h2>Food & beverages owners <span class="accent-b">love Mumo</span></h2>
+    </div>
+  </div>
+
+  <div class="test-track apple-focus">
+
+    <div class="test-card">
+      <div class="glow"></div>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">“Mumo helps us manage busy dinner service without losing track of orders or cash. Everything is tied together.”</p>
+      <div class="impact">🍽️ +25% faster service</div>
+      <div class="test-author"><div class="test-avatar">GN</div><div><div class="test-name">Grace Nakato <span class="verified">✔ Verified</span></div><div class="test-role">Glow Bistro, Kampala</div></div></div>
+      <div class="company-logo">Glow Bistro</div>
+    </div>
+
+    <div class="test-card">
+      <div class="glow"></div>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">“I can close the shift and see what sold best for breakfast, lunch and dinner in one place.”</p>
+      <div class="impact">📊 -40% order errors</div>
+      <div class="test-author"><div class="test-avatar blue">JM</div><div><div class="test-name">James Mwangi <span class="verified">✔ Verified</span></div><div class="test-role">Brew & Bites, Nairobi</div></div></div>
+      <div class="company-logo">Brew & Bites</div>
+    </div>
+
+    <div class="test-card">
+      <div class="glow"></div>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">“We stopped wasting stock and our kitchen team is more efficient with every service.”</p>
+      <div class="impact">🏬 3 services unified</div>
+      <div class="test-author"><div class="test-avatar green">AM</div><div><div class="test-name">Amina Mohamed <span class="verified">✔ Verified</span></div><div class="test-role">Amina Café, Dar</div></div></div>
+      <div class="company-logo">Amina Café</div>
+    </div>
+
+  </div>
+
+</section>
+
+<div class="cta-section">
+  <div class="cta-card reveal">
+    <h2>Ready to transform your kitchen?</h2>
+    <p>Join 300+ cafés, restaurants, and bars across East Africa who trust Mumo to run every shift smoothly.</p>
+    <div class="cta-actions">
+      <a href="https://app.mumopos.com/onboarding" class="cta-btn">Start Free Today<span class="arrow">→</span></a>
+      <button onclick="nav('demo')" class="cta-btn cta-btn-outline">Book a Demo<span class="arrow">→</span></button>
+    </div>
+  </div>
+</div>
+
+<footer><div class="footer-inner"><div class="footer-top"><div class="footer-brand"><span class="logo-text" style="display:block;margin-bottom:8px;cursor:pointer" onclick="nav('home')">mu<span style="color:var(--blue)">·</span>mo</span><p>The complete POS for East Africa.</p></div><div class="footer-col"><h4>Product</h4><button onclick="nav('features')">Features</button><button onclick="nav('pricing')">Pricing</button><button onclick="nav('salons')">For Salons</button></div><div class="footer-col"><h4>Company</h4><button onclick="nav('demo')">Book a Demo</button><a href="https://app.mumopos.com/login">Sign In</a></div><div class="footer-col"><h4>Contact</h4><a href="mailto:hello@mumopos.com">hello@mumopos.com</a><a>Kampala, Uganda</a></div></div><div class="footer-bottom"><span>© 2026 mumo POS.</span><div><a href="#">Privacy</a><a href="#">Terms</a></div></div></div></footer>
+</div>
+
+<!-- ========== RETAIL ========== -->
+<div class="page" id="page-retail">
+  <div class="salon-hero"><div class="salon-blob sb1"></div><div class="salon-blob sb2"></div><div class="salon-hero-inner"><div><span class="section-tag">For Retail</span><h1>Your shop, <span class="accent">your way</span></h1><p>From shelves to checkout, mumo helps retailers manage inventory, payments, and customer loyalty in one system.</p><div class="hero-btns" style="margin-top:0"><a href="https://app.mumopos.com/onboarding" class="btn-primary">Set up your store</a><button onclick="nav('demo')" class="btn-hero-outline">See a demo</button></div><div class="salon-proof"><div class="sp-item"><div class="sp-num">250+</div><div class="sp-lbl">Stores on mumo</div></div><div class="sp-item"><div class="sp-num">4.8★</div><div class="sp-lbl">Average rating</div></div><div class="sp-item"><div class="sp-num">4 min</div><div class="sp-lbl">To get started</div></div></div></div><div class="salon-vis"><div class="sv-title">Today's Store Performance</div><div><div class="sv-row2"><div class="sv-avatar" style="background:var(--orange)">CS</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="sv-name">Cashier</span><span class="sv-amt">UGX 520k</span></div><div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:83%"></div></div></div></div><div class="sv-row2"><div class="sv-avatar" style="background:var(--blue)">ST</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="sv-name">Stock</span><span class="sv-amt">UGX 410k</span></div><div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:65%"></div></div></div></div><div class="sv-row2"><div class="sv-avatar" style="background:#4ade80;color:#111">CS</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><span class="sv-name">Customer</span><span class="sv-amt">UGX 230k</span></div><div class="sv-bar-wrap" style="margin-top:5px"><div class="sv-bar-fill" style="width:46%"></div></div></div></div></div></div></div>
+</div>
+
+<section class="salon-why" style="background:var(--cream)">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-tag">Why retailers love Mumo</span>
+      <h2>Everything your store needs, <span class="accent">nothing it doesn't</span></h2>
+    </div>
+
+    <div class="salon-why-tabs">
+      <button class="salon-why-tab active" onclick="switchSalonTab('retail-pos',this)">Fast Checkout</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('retail-stock',this)">Stock Tracking</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('retail-staff',this)">Staff Sales</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('retail-loyalty',this)">Loyalty</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('retail-analytics',this)">Analytics</button>
+      <button class="salon-why-tab" onclick="switchSalonTab('retail-alerts',this)">Store Alerts</button>
+    </div>
+
+    <div class="salon-why-content active" id="salon-tab-retail-pos">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Fast checkout for every customer</h3>
+          <p>Process sales quickly at the counter, on the shop floor, or during events. Accept cash, mobile money, and card without slowing down the queue.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">⚡</div><div><h4>Quick POS</h4><p>Rapid checkout with easy product search and barcode support.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💳</div><div><h4>Multi-payment</h4><p>Accept cash, card, and mobile money seamlessly.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🧾</div><div><h4>Receipt options</h4><p>Print or send digital receipts to customers instantly.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/FireShot Capture 010 - mumo POS - [app.mumopos.com].png" alt="Fast Checkout"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-retail-stock">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Stock tracking made simple</h3>
+          <p>Monitor inventory across products, variants, and locations with automatic low-stock alerts and reorder reminders.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">📦</div><div><h4>Live stock levels</h4><p>See exact inventory at every moment.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">⚠️</div><div><h4>Low-stock alerts</h4><p>Receive alerts before products run out.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🧾</div><div><h4>Variant tracking</h4><p>Track sizes, colors, and batch quantities easily.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/african-american-worker-writing-inventory-list-while-checking-stock-storage-room.webp" alt="Stock Tracking"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-retail-staff">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Track staff performance</h3>
+          <p>See who sells the most, who needs support, and how each cashier contributes to daily sales.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">👥</div><div><h4>Sales by staff</h4><p>Monitor performance for every team member.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">⭐</div><div><h4>Top performers</h4><p>Identify your strongest sellers at a glance.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">📊</div><div><h4>Clear dashboards</h4><p>Get fast insight into daily and weekly sales.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/cashier.webp" alt="Staff Sales"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-retail-loyalty">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Build customer loyalty</h3>
+          <p>Capture customer information at checkout and reward repeat shoppers with simple loyalty tracking.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">🎁</div><div><h4>Loyalty tracking</h4><p>Track visits and repeat purchases easily.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💌</div><div><h4>Promotions</h4><p>Send offers that bring customers back.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">👤</div><div><h4>Customer profiles</h4><p>Save preferences and purchase history automatically.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/man-using-keyboard-computer-laptop-login-interface-touch-screen-user-name-password-inputs-virtual-digital-account-online-concept-technology.webp" alt="Loyalty"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-retail-analytics">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Analytics for smarter retail</h3>
+          <p>Understand product performance, peak hours, and customer behavior so you can stock the right items and maximize profit.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">📈</div><div><h4>Sales insights</h4><p>Track what sells fastest and when.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🕒</div><div><h4>Peak times</h4><p>Find your busiest hours and staff accordingly.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💡</div><div><h4>Profit visibility</h4><p>See margin and revenue trends clearly.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/reports-dashboard.jpg" alt="Analytics"></div>
+      </div>
+    </div>
+
+    <div class="salon-why-content" id="salon-tab-retail-alerts">
+      <div class="salon-why-inner">
+        <div class="salon-why-text">
+          <h3>Store alerts that keep you informed</h3>
+          <p>Receive notifications for low stock, cash variances, and service issues so you can act before they become problems.</p>
+          <div class="salon-why-features">
+            <div class="swf-item"><div class="swf-icon">⚠️</div><div><h4>Low stock warnings</h4><p>Know when product levels dip below safe thresholds.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">💵</div><div><h4>Cash alerts</h4><p>Spot discrepancies before shift close.</p></div></div>
+            <div class="swf-item"><div class="swf-icon">🔍</div><div><h4>Activity notifications</h4><p>Track important events in your store in real time.</p></div></div>
+          </div>
+        </div>
+        <div class="salon-why-visual"><img src="images/inventory-dashboard.jpg" alt="Store Alerts"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="testimonials-full">
+
+  <div class="section-inner">
+    <div class="center reveal">
+      <span class="section-tag blue">Real stories</span>
+      <h2>Retail businesses <span class="accent-b">love Mumo</span></h2>
+    </div>
+  </div>
+
+  <div class="test-track apple-focus">
+
+    <div class="test-card">
+      <div class="glow"></div>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">“Mumo keeps our store moving through rush hour with fast checkout and clear stock counts.”</p>
+      <div class="impact">🛍️ +30% quicker checkout</div>
+      <div class="test-author"><div class="test-avatar">GN</div><div><div class="test-name">Grace Nakato <span class="verified">✔ Verified</span></div><div class="test-role">Glow Retail, Kampala</div></div></div>
+      <div class="company-logo">Glow Retail</div>
+    </div>
+
+    <div class="test-card">
+      <div class="glow"></div>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">“I can track stock and sales in one system. No more guesswork at the end of the day.”</p>
+      <div class="impact">📊 -55% stock shrinkage</div>
+      <div class="test-author"><div class="test-avatar blue">JM</div><div><div class="test-name">James Mwangi <span class="verified">✔ Verified</span></div><div class="test-role">Market Mart, Nairobi</div></div></div>
+      <div class="company-logo">Market Mart</div>
+    </div>
+
+    <div class="test-card">
+      <div class="glow"></div>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">“My team now sees daily sales clearly, and stock levels are under control.”</p>
+      <div class="impact">🏬 2 stores unified</div>
+      <div class="test-author"><div class="test-avatar green">AM</div><div><div class="test-name">Amina Mohamed <span class="verified">✔ Verified</span></div><div class="test-role">Amina Retail, Dar</div></div></div>
+      <div class="company-logo">Amina Retail</div>
+    </div>
+
+  </div>
+
+</section>
+
+<div class="cta-section">
+  <div class="cta-card reveal">
+    <h2>Ready to transform your store?</h2>
+    <p>Join 250+ retail businesses across East Africa who trust Mumo to manage checkout, stock, and customer loyalty.</p>
+    <div class="cta-actions">
+      <a href="https://app.mumopos.com/onboarding" class="cta-btn">Start Free Today<span class="arrow">→</span></a>
+      <button onclick="nav('demo')" class="cta-btn cta-btn-outline">Book a Demo<span class="arrow">→</span></button>
+    </div>
+  </div>
+</div>
+
+<footer><div class="footer-inner"><div class="footer-top"><div class="footer-brand"><span class="logo-text" style="display:block;margin-bottom:8px;cursor:pointer" onclick="nav('home')">mu<span style="color:var(--blue)">·</span>mo</span><p>The complete POS for East Africa.</p></div><div class="footer-col"><h4>Product</h4><button onclick="nav('features')">Features</button><button onclick="nav('pricing')">Pricing</button><button onclick="nav('salons')">For Salons</button></div><div class="footer-col"><h4>Company</h4><button onclick="nav('demo')">Book a Demo</button><a href="https://app.mumopos.com/login">Sign In</a></div><div class="footer-col"><h4>Contact</h4><a href="mailto:hello@mumopos.com">hello@mumopos.com</a><a>Kampala, Uganda</a></div></div><div class="footer-bottom"><span>© 2026 mumo POS.</span><div><a href="#">Privacy</a><a href="#">Terms</a></div></div></div></footer>
+</div>
+
+<!-- ========== DEMO ========== -->
+<div class="page" id="page-demo">
+  <div class="demo-hero"><div class="reveal"><span class="section-tag white">Free, no commitment</span><h1>Book a <span class="accent">live demo</span></h1><p>A mumo expert will walk you through the product and answer all your questions. Takes 30 minutes.</p></div></div>
+  <div class="demo-body">
+
+  <!-- FORM -->
+  <div class="demo-form-wrap reveal">
+
+    <div id="demo-form-content">
+
+      <div class="demo-badge">
+        ⚡ Takes less than 2 minutes
+      </div>
+
+      <h2>See Mumo in action</h2>
+
+      <p>
+       Book a personalized demo and discover how Mumo can help you save time, increase sales visibility, and manage your business with confidence.
+      </p>
+
+      <div class="form-row">
+
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" placeholder="Grace">
+        </div>
+
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" placeholder="Nakato">
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label>Business name</label>
+        <input type="text" placeholder="Glow Beauty Studio">
+      </div>
+
+      <div class="form-group">
+        <label>Business type</label>
+        <select>
+          <option value="">Select type</option>
+          <option>Salon & Beauty</option>
+          <option>Retail Shop</option>
+          <option>Pharmacy</option>
+          <option>Coffee Shop / Café</option>
+          <option>Wholesale & Trade</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Country</label>
+        <select>
+          <option>Uganda</option>
+          <option>Kenya</option>
+          <option>Tanzania</option>
+          <option>Rwanda</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>WhatsApp / Phone</label>
+        <input type="tel" placeholder="+256 700 000 000">
+      </div>
+
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" placeholder="grace@glowbeauty.ug">
+      </div>
+
+      <div class="form-group">
+        <label>
+          Anything specific?
+          <span style="color:#888;font-weight:400;">
+            (optional)
+          </span>
+        </label>
+
+        <textarea placeholder="e.g. Staff commissions, inventory tracking, multi-branch setup..."></textarea>
+      </div>
+
+      <div class="demo-trust">
+        <span>✓ No credit card required</span>
+        <span>✓ Free consultation</span>
+        <span>✓ 30-minute demo</span>
+      </div>
+
+      <button class="submit-btn" onclick="submitDemo()">
+        Request Demo →
+      </button>
+
+    </div>
+
+    <!-- SUCCESS STATE -->
+
+    <div class="demo-success" id="demo-success">
+
+      <div class="success-icon">
+        🎉
+      </div>
+
+      <h3>Request received!</h3>
+
+      <p>
+        A Mumo team member will contact you on WhatsApp within
+        <strong>24 hours</strong>
+        to confirm your demo.
+
+        <br><br>
+
+        In the meantime, you can start using Mumo immediately.
+
+        <br><br>
+
+        <a href="https://app.mumopos.com/onboarding">
+          Create your free account →
+        </a>
+      </p>
+
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDE -->
+
+  <div class="demo-info">
+
+    <!-- CARD 1 -->
+
+    <div class="di-card reveal d1">
+
+      <h3>🕐 What to expect</h3>
+
+      <p>
+        A live 30-minute walkthrough tailored to your business.
+      </p>
+
+      <div class="di-list">
+        <div class="di-li">Live dashboard walkthrough</div>
+        <div class="di-li">Business-specific recommendations</div>
+        <div class="di-li">Questions answered live</div>
+        <div class="di-li">Personalized setup plan</div>
+      </div>
+
+    </div>
+
+    <!-- CARD 2 -->
+
+    <div class="di-card reveal d2">
+
+      <h3>📍 Who is this for?</h3>
+
+      <p>
+        Perfect for business owners looking to simplify operations.
+      </p>
+
+      <div class="di-list">
+        <div class="di-li">Replace notebooks & spreadsheets</div>
+        <div class="di-li">Track staff performance</div>
+        <div class="di-li">Understand revenue instantly</div>
+        <div class="di-li">Scale to multiple branches</div>
+      </div>
+
+    </div>
+
+    <!-- CARD 3 -->
+
+    <div class="di-card reveal d3">
+
+      <h3>💬 Prefer WhatsApp?</h3>
+
+      <p>
+        Reach us directly. We support English, Luganda and Swahili.
+      </p>
+
+      <a href="https://wa.me/256700000000" class="btn-primary">
+        Chat on WhatsApp →
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+
+<script>
+
+// REVEAL
+function initReveal(){
+  const els=document.querySelectorAll('.page.active .reveal:not(.visible)');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:.08});
+  els.forEach(el=>obs.observe(el));
+}
+window.initReveal=initReveal;
+
+// STICKY CTA + BACK TO TOP
+let stickyClosed=false;
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY;
+  document.getElementById('topbar').classList.toggle('scrolled',s>20);
+  const cta=document.getElementById('stickyCta');
+  if(!stickyClosed && cta.style.display!=='none') cta.classList.toggle('visible',s>400);
+  document.getElementById('backTop').classList.toggle('visible',s>300);
+});
+
+// COOKIE
+function closeCookie(){
+  const b=document.getElementById('cookieBanner');
+  b.style.animation='slideDown .3s ease forwards';
+  setTimeout(()=>b.remove(),300);
+}
+setTimeout(()=>{},500);
+
+// TOUR TABS
+function switchTour(name,btn){
+  document.querySelectorAll('.tour-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['pos','reports','inventory'].forEach(id=>{
+    const el=document.getElementById('tour-'+id);
+    if(el) el.classList.toggle('active',id===name);
+  });
+  setTimeout(initReveal,80);
+}
+
+// FEATURE TABS
+function switchTab(name,btn){
+  document.querySelectorAll('.feat-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const salonsTab=document.getElementById('tab-salons');
+  const retailTab=document.getElementById('tab-retail');
+  if(salonsTab) salonsTab.style.display=name==='salons'?'block':'none';
+  if(retailTab) retailTab.style.display=name==='retail'?'block':'none';
+  setTimeout(initReveal,80);
+}
+
+// FAQ
+function toggleFaq(item){
+  const was=item.classList.contains('open');
+  document.querySelectorAll('.faq-item,.pfaq-item').forEach(f=>f.classList.remove('open'));
+  if(!was) item.classList.add('open');
+}
+
+// DEMO FORM
+function submitDemo(){
+  const form=document.getElementById('demo-form-content');
+  const success=document.getElementById('demo-success');
+  if(form) form.style.display='none';
+  if(success) success.style.display='block';
+}
+
+// BILLING TOGGLE
+let isAnnual=false;
+function toggleBilling(){
+  isAnnual=!isAnnual;
+  const wrap=document.getElementById('billingToggle');
+  const monthly=document.getElementById('monthly-lbl');
+  const annual=document.getElementById('annual-lbl');
+  const proPrice=document.getElementById('pro-price');
+  const bizPrice=document.getElementById('biz-price');
+  if(wrap) wrap.classList.toggle('annual',isAnnual);
+  if(monthly) monthly.classList.toggle('active',!isAnnual);
+  if(annual) annual.classList.toggle('active',isAnnual);
+  if(proPrice) proPrice.textContent=isAnnual?'UGX 39k':'UGX 49k';
+  if(bizPrice) bizPrice.textContent=isAnnual?'UGX 79k':'UGX 99k';
+}
+
+// LIVE COUNTER animation
+let count=547;
+setInterval(()=>{
+  if(Math.random()>.6){count+=Math.random()>.5?1:-1;count=Math.max(520,count)}
+  const el=document.getElementById('liveCount');
+  if(el) el.textContent=count;
+},4000);
+
+initReveal();
+const menuToggle = document.getElementById('menuToggle');
+const mobileNav = document.getElementById('mobileNav');
+
+if(menuToggle && mobileNav){
+  menuToggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('active');
+  });
+}
+
+setTimeout(initReveal,80);
+
+const video = document.getElementById("ctaVideo");
+
+if(video){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+}, {
+    threshold: 0.5
+});
+
+  observer.observe(video);
+}
+function toggleFaq(btn) {
+  const item = btn.closest(".faq-item");
+
+  document.querySelectorAll(".faq-item").forEach(i => {
+    if (i !== item) i.classList.remove("active");
+  });
+
+  item.classList.toggle("active");
+}
+document.querySelectorAll(".test-card").forEach(card => {
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    card.style.setProperty("--x", `${x}px`);
+    card.style.setProperty("--y", `${y}px`);
+  });
+});
+
+
+const track = document.querySelector(".test-track");
+const cards = document.querySelectorAll(".test-card");
+
+function setCenterCard() {
+  const center = window.innerWidth / 2;
+
+  let closest = null;
+  let closestDist = Infinity;
+
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const cardCenter = rect.left + rect.width / 2;
+    const dist = Math.abs(center - cardCenter);
+
+    if (dist < closestDist) {
+      closestDist = dist;
+      closest = card;
+    }
+
+    card.classList.remove("is-center");
+  });
+
+  if (closest) closest.classList.add("is-center");
+}
+
+/* scroll updates center */
+if (track && cards.length) {
+track.addEventListener("scroll", setCenterCard);
+window.addEventListener("load", setCenterCard);
+window.addEventListener("resize", setCenterCard);
+
+/* hover changes focus instantly */
+cards.forEach(card => {
+  card.addEventListener("mouseenter", () => {
+    cards.forEach(c => c.classList.remove("is-center"));
+    card.classList.add("is-center");
+  });
+});
+
+/* when leaving section → reset to scroll-based center */
+track.addEventListener("mouseleave", () => {
+  setCenterCard();
+});
+if (window.innerWidth <= 768) {
+  const middleCard = cards[Math.floor(cards.length / 2)];
+
+  cards.forEach(card => card.classList.remove("is-center"));
+
+  if (middleCard) {
+    middleCard.classList.add("is-center");
+  }
+}
+}
+
+
+</script>
+</body>
+</html>
+
